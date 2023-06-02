@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    #weather-results {
+      margin-top: 20px;
+    }
+    
+    #weather-results h3 {
+      margin-bottom: 10px;
+    }
+    
+    #weather-results ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    #weather-results li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather App</h1>
+    <label for="city-input">Enter city names (comma-separated):</label>
+    <input type="text" id="city-input">
+    <button onclick="getWeather()">Get Weather</button>
+    <div id="weather-results"></div>
+  </div>
+
+  <script>
+    function getWeather() {
+      const cityInput = document.getElementById('city-input');
+      const cities = cityInput.value.split(',').map(city => city.trim());
+      
+      const requestData = { cities };
+      
+      fetch('/getWeather', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+      .then(response => response.json())
+      .then(data => displayWeatherResults(data.weather))
+      .catch(error => console.error('Error fetching weather data:', error));
+    }
+    
+    function displayWeatherResults(weatherData) {
+      const weatherResults = document.getElementById('weather-results');
+      weatherResults.innerHTML = '';
+
+      const heading = document.createElement('h3');
+      heading.textContent = 'Weather Results';
+      weatherResults.appendChild(heading);
+
+      const weatherList = document.createElement('ul');
+      
+      for (const city in weatherData) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${city}: ${weatherData[city]}`;
+        weatherList.appendChild(listItem);
+      }
+      
+      weatherResults.appendChild(weatherList);
+    }
+  </script>
+</body>
+</html>
