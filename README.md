@@ -13,7 +13,7 @@ The server is responsible for handling API requests and fetching weather data fr
 2. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/abhiram1809/Textbook_Weather_App
 
 3. Install the required dependencies by navigating to the project directory and running:
  
